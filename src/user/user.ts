@@ -1,4 +1,5 @@
 import { DataTypes, Model, Sequelize, Optional } from 'sequelize';
+import { Subject } from '../subject/subject';
 
 interface UserAttributes {
   id: number;
@@ -14,6 +15,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public name!: string;
   public universityId!: number;
   public email!: string;
+
+  public addSubject!: (subject: Subject) => Promise<void>;
 }
 
 export const UserModel = (sequelize: Sequelize) => {

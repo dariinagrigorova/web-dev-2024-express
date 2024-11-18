@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, email, universityId } = req.body;
+    const { name, email, universityId, subjectId } = req.body;
     const university = await db.models.University.findByPk(universityId);
 
     if (!university) {
@@ -16,8 +16,17 @@ router.post('/', async (req: Request, res: Response) => {
     if (await db.models.User.findOne({ where: { email } })) {
       throw new Error("User already exists.")
     }
+
+    const subject = await db.models.Subject.findByPk(subjectId);
     
+    if (!subject) {
+      res.status(404).json({ error: 'Subject not found' });
+      return;
+    }
+
     const user = await db.models.User.create({ name, email, universityId });
+    await user.addSubject(subject);
+
     res.status(201).json(user);
   } catch (error: any) {
     res.status(400).json({ error: error.message });

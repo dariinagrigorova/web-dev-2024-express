@@ -12,13 +12,25 @@ async function testPostUniversityRequest() {
   }
 }
 
+async function testPostSubjectRequest() {
+  try {
+    const response = await axios.post('http://localhost:3000/subject', {
+      name: 'Math',
+    });
+    console.log('Response data:', response.data);
+  } catch (error) {
+    console.error('Error:', error.response ? error.response.data : error.message);
+  }
+}
+
 
 async function testPostUserRequest() {
   try {
     const response = await axios.post('http://localhost:3000/user', {
       name: 'John Doe',
       email: 'johndoe@example.com',
-      universityId: 1
+      universityId: 1,
+      subjectId: 1
     });
     console.log('Response data:', response.data);
   } catch (error) {
@@ -27,5 +39,6 @@ async function testPostUserRequest() {
 }
 (async () => {
   await testPostUniversityRequest();
+  await testPostSubjectRequest();
   await testPostUserRequest()
 })()
